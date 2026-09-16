@@ -31,7 +31,9 @@ export default function Home() {
         </div>
         <h1>{site.displayName || "未设置名称"}</h1>
         <p className="profile-handle">{site.handle ? `@${site.handle.replace(/^@/, "")}` : "未设置账号"}</p>
-        <div className="profile-tagline">⚽ Football × 💻 Software × 🤖 AI</div>
+        <div className="profile-tagline" title={site.homeIntro || undefined}>
+          {site.homeIntro || "⚽ Football × 💻 Software × 🤖 AI"}
+        </div>
         <div className="profile-stats">
           <div><b>{posts.length}</b><span>篇思考</span></div>
           <div className="stats-divider">|</div>
@@ -72,9 +74,95 @@ export default function Home() {
   </div>
 }
 
-function HomeView({ posts, intro }: { posts: Post[]; intro: string }) { return <><section className="title"><h2>Home</h2><p>{intro || "暂未添加首页简介。"}</p></section><PostFeed posts={posts.slice(0, 5)} empty="还没有已发布的文章。" /></> }
-function Projects({ projects }: { projects: Project[] }) { return <><section className="title"><h2>Projects</h2><p>从项目背景、技术方案到成果展示，点击卡片查看完整作品记录。</p></section>{projects.length ? <section className="grid project-grid">{projects.map((project) => <article className="card project-card" key={project.slug}>{project.coverUrl && <Link href={`/projects/${project.slug}`} className="project-cover" style={{ backgroundImage: `url(${project.coverUrl})` }} aria-label={`查看 ${project.title} 详情`} />}<div className="card-body project-card-body"><Link href={`/projects/${project.slug}`} className="project-detail-link"><h3>{project.title}</h3></Link><p>{project.description}</p><div className="tags">{project.tags.map((tag) => <span key={tag}>{tag}</span>)}</div><div className="project-actions"><Link className="project-detail-link" href={`/projects/${project.slug}`}>查看详情 →</Link>{project.url && <a className="project-link" href={project.url} target="_blank" rel="noreferrer">访问项目 ↗</a>}</div></div></article>)}</section> : <p className="empty-state">还没有已发布的项目。</p>}</> }
-function Blog({ posts }: { posts: Post[] }) { return <><section className="title"><h2>Blog</h2><p>置顶文章会优先展示，其他文章按发布时间排列。</p></section><PostFeed posts={posts} empty="还没有已发布的文章。" /></> }
+function HomeView({ posts, intro }: { posts: Post[]; intro: string }) {
+  return (
+    <>
+      <section className="title">
+        <div className="title-content">
+          <h2>Home</h2>
+          <p>{intro || "暂未添加首页简介。"}</p>
+        </div>
+        <div className="title-badge">
+          <i />
+          <span>{posts.length} POSTS</span>
+        </div>
+      </section>
+      <PostFeed posts={posts.slice(0, 5)} empty="还没有已发布的文章。" />
+    </>
+  )
+}
+function Projects({ projects }: { projects: Project[] }) {
+  return (
+    <>
+      <section className="title">
+        <div className="title-content">
+          <h2>Projects</h2>
+          <p>从项目背景、技术方案到成果展示，点击卡片查看完整作品记录。</p>
+        </div>
+        <div className="title-badge">
+          <i />
+          <span>{projects.length} WORKS</span>
+        </div>
+      </section>
+      {projects.length ? (
+        <section className="grid project-grid">
+          {projects.map((project) => (
+            <article className="card project-card" key={project.slug}>
+              {project.coverUrl && (
+                <Link
+                  href={`/projects/${project.slug}`}
+                  className="project-cover"
+                  style={{ backgroundImage: `url(${project.coverUrl})` }}
+                  aria-label={`查看 ${project.title} 详情`}
+                />
+              )}
+              <div className="card-body project-card-body">
+                <Link href={`/projects/${project.slug}`} className="project-detail-link">
+                  <h3>{project.title}</h3>
+                </Link>
+                <p>{project.description}</p>
+                <div className="tags">
+                  {project.tags.map((tag) => (
+                    <span key={tag}>{tag}</span>
+                  ))}
+                </div>
+                <div className="project-actions">
+                  <Link className="project-detail-link" href={`/projects/${project.slug}`}>
+                    查看详情 →
+                  </Link>
+                  {project.url && (
+                    <a className="project-link" href={project.url} target="_blank" rel="noreferrer">
+                      访问项目 ↗
+                    </a>
+                  )}
+                </div>
+              </div>
+            </article>
+          ))}
+        </section>
+      ) : (
+        <p className="empty-state">还没有已发布的项目。</p>
+      )}
+    </>
+  )
+}
+function Blog({ posts }: { posts: Post[] }) {
+  return (
+    <>
+      <section className="title">
+        <div className="title-content">
+          <h2>Blog</h2>
+          <p>置顶文章会优先展示，其他文章按发布时间排列。</p>
+        </div>
+        <div className="title-badge">
+          <i />
+          <span>ALL ARTICLES</span>
+        </div>
+      </section>
+      <PostFeed posts={posts} empty="还没有已发布的文章。" />
+    </>
+  )
+}
 function PostFeed({ posts, empty }: { posts: Post[]; empty: string }) {
   if (!posts.length) return <p className="empty-state">{empty}</p>
 

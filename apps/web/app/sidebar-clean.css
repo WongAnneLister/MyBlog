@@ -80,13 +80,17 @@
   background: rgba(255, 255, 255, 0.035);
   border: 1px solid rgba(255, 255, 255, 0.07);
   border-radius: 8px;
-  padding: 5px 8px;
+  padding: 5px 10px;
   font-size: 11px;
-  color: var(--muted);
+  color: #94a3b8;
   margin: 0 auto 14px;
   line-height: 1.45;
   width: fit-content;
-  max-width: 100%;
+  max-width: 90%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
 }
 
 .profile-stats {
