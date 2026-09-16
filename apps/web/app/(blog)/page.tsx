@@ -21,7 +21,51 @@ export default function Home() {
   useEffect(() => { void Promise.all([fetch(`${api}/posts`).then((response) => response.ok ? response.json() : []), fetch(`${api}/projects`).then((response) => response.ok ? response.json() : []), fetch(`${api}/site`).then((response) => response.ok ? response.json() : emptySite)]).then(([nextPosts, nextProjects, nextSite]) => { setPosts(nextPosts); setProjects(nextProjects); setSite({ ...emptySite, ...nextSite, links: Array.isArray(nextSite.links) ? nextSite.links : [], education: Array.isArray(nextSite.education) ? nextSite.education : [], workExperience: Array.isArray(nextSite.workExperience) ? nextSite.workExperience : [] }) }) }, [])
 
   return <div className={`site soft serif ${light ? "light" : ""} ${shadow ? "soft-shadow" : ""}`} style={style}>
-    <aside><section className="profile-card"><div className="profile-avatar" style={site.avatarUrl ? { backgroundImage: `url(${site.avatarUrl})` } : undefined}>{site.avatarUrl ? null : initial}</div><h1>{site.displayName || "未设置名称"}</h1><p>{site.handle ? `@${site.handle.replace(/^@/, "")}` : "未设置账号"}</p><div className="profile-stats"><div><b>{posts.length}</b><span>文章</span></div><div><b>{projects.length}</b><span>项目</span></div></div><div className="profile-links">{site.links.length ? site.links.map((link) => <a href={link.url} target="_blank" rel="noreferrer" key={`${link.label}-${link.url}`}>{link.label}<span>↗</span></a>) : <span className="no-links">请在后台添加个人链接</span>}</div></section><nav className="primary-nav">{["Home", "About", "Projects", "Blog"].map((item) => <button className={view === item ? "selected" : ""} onClick={() => setView(item)} key={item}><i>·</i>{item}</button>)}</nav><div className="side-footer">© {new Date().getFullYear()}</div></aside>
+    <aside>
+      <section className="profile-card">
+        <div className="profile-avatar-wrap">
+          <div className="profile-avatar" style={site.avatarUrl ? { backgroundImage: `url(${site.avatarUrl})` } : undefined}>
+            {site.avatarUrl ? null : initial}
+          </div>
+          <span className="profile-status-dot" title="在线 / 开放交流" />
+        </div>
+        <h1>{site.displayName || "未设置名称"}</h1>
+        <p className="profile-handle">{site.handle ? `@${site.handle.replace(/^@/, "")}` : "未设置账号"}</p>
+        <div className="profile-tagline">⚽ Football × 💻 Software × 🤖 AI</div>
+        <div className="profile-stats">
+          <div><b>{posts.length}</b><span>篇思考</span></div>
+          <div className="stats-divider">|</div>
+          <div><b>{projects.length}</b><span>个作品</span></div>
+        </div>
+        <div className="profile-links">
+          {site.links.length ? site.links.map((link) => (
+            <a href={link.url} target="_blank" rel="noreferrer" key={`${link.label}-${link.url}`}>
+              {link.label}<span>↗</span>
+            </a>
+          )) : <span className="no-links">请在后台添加个人链接</span>}
+        </div>
+      </section>
+      <nav className="primary-nav">
+        {[
+          { id: "Home", label: "首页 · Home" },
+          { id: "About", label: "关于 · About" },
+          { id: "Projects", label: "项目 · Projects" },
+          { id: "Blog", label: "博文 · Blog" }
+        ].map((item) => (
+          <button
+            className={`nav-pill ${view === item.id ? "selected" : ""}`}
+            onClick={() => setView(item.id)}
+            key={item.id}
+          >
+            <span>{item.label}</span>
+            <i className="nav-indicator" />
+          </button>
+        ))}
+      </nav>
+      <div className="side-footer">
+        <span>© {new Date().getFullYear()} {site.displayName || "Blog"}</span>
+      </div>
+    </aside>
     <main>{view === "Home" ? <HomeView posts={posts} intro={site.homeIntro} /> : view === "Projects" ? <Projects projects={projects} /> : view === "Blog" ? <Blog posts={posts} /> : <AboutWithResume site={site} />}</main>
     <button className="settings-trigger" onClick={() => setSettings(!settings)} aria-label="Open appearance settings">⚙</button>
     {settings && <section className="settings-panel"><button className="close-settings" onClick={() => setSettings(false)}>×</button><h3>Appearance</h3><label className="setting-line">Night mode <button className="switch" onClick={() => setLight(!light)}><i className={light ? "on" : ""}/></button></label><label className="setting-line">Typeface <b>Serif</b></label><label className="setting-line">Shadow <button className="switch" onClick={() => setShadow(!shadow)}><i className={shadow ? "on" : ""}/></button></label><label className="setting-line color-line">Accent <span>{["#9bf443", "#4bb8ff", "#e4a2d5", "#d7a36b"].map((color) => <button aria-label={`Use ${color}`} className={accent === color ? "chosen" : ""} style={{ background: color }} onClick={() => setAccent(color)} key={color}/>)}</span></label><label className="radius-label">Roundness <input type="range" min="12" max="40" value={radius} onChange={(event) => setRadius(Number(event.target.value))}/></label></section>}
