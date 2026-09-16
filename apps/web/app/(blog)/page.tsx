@@ -75,6 +75,60 @@ export default function Home() {
 function HomeView({ posts, intro }: { posts: Post[]; intro: string }) { return <><section className="title"><h2>Home</h2><p>{intro || "暂未添加首页简介。"}</p></section><PostFeed posts={posts.slice(0, 5)} empty="还没有已发布的文章。" /></> }
 function Projects({ projects }: { projects: Project[] }) { return <><section className="title"><h2>Projects</h2><p>从项目背景、技术方案到成果展示，点击卡片查看完整作品记录。</p></section>{projects.length ? <section className="grid project-grid">{projects.map((project) => <article className="card project-card" key={project.slug}>{project.coverUrl && <Link href={`/projects/${project.slug}`} className="project-cover" style={{ backgroundImage: `url(${project.coverUrl})` }} aria-label={`查看 ${project.title} 详情`} />}<div className="card-body project-card-body"><Link href={`/projects/${project.slug}`} className="project-detail-link"><h3>{project.title}</h3></Link><p>{project.description}</p><div className="tags">{project.tags.map((tag) => <span key={tag}>{tag}</span>)}</div><div className="project-actions"><Link className="project-detail-link" href={`/projects/${project.slug}`}>查看详情 →</Link>{project.url && <a className="project-link" href={project.url} target="_blank" rel="noreferrer">访问项目 ↗</a>}</div></div></article>)}</section> : <p className="empty-state">还没有已发布的项目。</p>}</> }
 function Blog({ posts }: { posts: Post[] }) { return <><section className="title"><h2>Blog</h2><p>置顶文章会优先展示，其他文章按发布时间排列。</p></section><PostFeed posts={posts} empty="还没有已发布的文章。" /></> }
-function PostFeed({ posts, empty }: { posts: Post[]; empty: string }) { return <section className="post-feed">{posts.length ? posts.map((post) => <Link className="post-preview" href={`/posts/${post.slug}`} key={post.slug}><div className="post-preview-meta">{post.pinned && <span className="pin-badge">置顶</span>}<time>{displayDate(post.date)}</time></div><h3>{post.title}</h3><p>{post.excerpt || "这篇文章暂未填写摘要。"}</p><footer><span>{post.tags.slice(0, 3).join(" · ") || "文章"}</span><b>阅读全文 →</b></footer></Link>) : <p className="empty-state">{empty}</p>}</section> }
+function PostFeed({ posts, empty }: { posts: Post[]; empty: string }) {
+  if (!posts.length) return <p className="empty-state">{empty}</p>
+
+  const pinnedPost = posts.find((p) => p.pinned)
+  const regularPosts = pinnedPost ? posts.filter((p) => p.slug !== pinnedPost.slug) : posts
+
+  return (
+    <section className="feed-container">
+      {pinnedPost && (
+        <article className="hero-post-card">
+          <Link href={`/posts/${pinnedPost.slug}`} className="hero-post-link">
+            <div className="hero-top-row">
+              <span className="hero-pin-badge">★ 置顶精选</span>
+              <time className="hero-date">{displayDate(pinnedPost.date)}</time>
+            </div>
+            <h3 className="hero-title">{pinnedPost.title}</h3>
+            <p className="hero-excerpt">{pinnedPost.excerpt || "这篇文章暂未填写摘要。"}</p>
+            <div className="hero-footer">
+              <div className="tag-group">
+                {pinnedPost.tags.map((tag) => (
+                  <span className="hero-tag" key={tag}>{tag}</span>
+                ))}
+              </div>
+              <span className="hero-read-more">阅读全文 →</span>
+            </div>
+          </Link>
+        </article>
+      )}
+
+      {regularPosts.length > 0 && (
+        <div className="post-grid-two-col">
+          {regularPosts.map((post) => (
+            <article className="bento-post-card" key={post.slug}>
+              <Link href={`/posts/${post.slug}`} className="bento-card-link">
+                <div className="bento-card-meta">
+                  <time>{displayDate(post.date)}</time>
+                </div>
+                <h4 className="bento-card-title">{post.title}</h4>
+                <p className="bento-card-excerpt">{post.excerpt || "这篇文章暂未填写摘要。"}</p>
+                <div className="bento-card-footer">
+                  <div className="tag-group">
+                    {post.tags.slice(0, 2).map((tag) => (
+                      <span className="bento-tag" key={tag}>{tag}</span>
+                    ))}
+                  </div>
+                  <span className="bento-read-arrow">→</span>
+                </div>
+              </Link>
+            </article>
+          ))}
+        </div>
+      )}
+    </section>
+  )
+}
 function ResumeSection({ title, items }: { title: string; items: ResumeItem[] }) { if (!items.length) return null; return <section className="resume-section"><div className="resume-heading"><span>RESUME</span><h3>{title}</h3></div><div className="resume-list">{items.map((item, index) => <article className="resume-item" key={`${item.organization}-${item.title}-${index}`}><div className="resume-period">{item.period || "时间待补充"}</div><div className="resume-detail"><div><h4>{item.organization || "未命名经历"}</h4>{item.location && <span>{item.location}</span>}</div>{item.title && <strong>{item.title}</strong>}{item.description && <p>{item.description}</p>}</div></article>)}</div></section> }
 function AboutWithResume({ site }: { site: Site }) { return <><section className="title"><h2>{site.aboutTitle || "About"}</h2><p>{site.aboutContent ? "" : "暂未添加个人介绍。"}</p></section>{site.aboutContent && <section className="about-content"><Markdown content={site.aboutContent} /></section>}<div className="resume-sections"><ResumeSection title="教育经历" items={site.education} /><ResumeSection title="工作经历" items={site.workExperience} /></div></> }
