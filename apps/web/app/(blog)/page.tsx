@@ -31,9 +31,19 @@ export default function Home() {
         </div>
         <h1>{site.displayName || "未设置名称"}</h1>
         <p className="profile-handle">{site.handle ? `@${site.handle.replace(/^@/, "")}` : "未设置账号"}</p>
-        <div className="profile-tagline" title={site.homeIntro || undefined}>
-          {site.homeIntro || "⚽ Football × 💻 Software × 🤖 AI"}
-        </div>
+        {site.homeIntro ? (
+          (site.homeIntro.includes("×") || site.homeIntro.includes(" x ")) ? (
+            <div className="profile-tags-wrap">
+              {(site.homeIntro.includes("×") ? site.homeIntro.split("×") : site.homeIntro.split(" x ")).map((item, idx) => (
+                <span className="profile-tag-chip" key={idx}>
+                  {item.trim()}
+                </span>
+              ))}
+            </div>
+          ) : (
+            <div className="profile-tagline">{site.homeIntro}</div>
+          )
+        ) : null}
         <div className="profile-stats">
           <div><b>{posts.length}</b><span>篇思考</span></div>
           <div className="stats-divider">|</div>
