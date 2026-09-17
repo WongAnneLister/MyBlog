@@ -60,13 +60,13 @@
   box-shadow: 0 0 10px #10b981;
 }
 
-.profile-card h1 {
+.profile-card .profile-name {
   font-family: var(--font-editorial, Georgia, serif) !important;
   font-size: 22px !important;
   font-weight: 600 !important;
   margin: 0 0 4px !important;
   letter-spacing: -0.01em;
-  color: #ffffff;
+  color: var(--text);
 }
 
 .profile-handle {
@@ -82,7 +82,7 @@
   border-radius: 8px;
   padding: 5px 10px;
   font-size: 11px;
-  color: #94a3b8;
+  color: var(--muted);
   margin: 0 auto 14px;
   line-height: 1.5;
   width: fit-content;
@@ -109,7 +109,7 @@
   border-radius: 6px;
   padding: 3px 8px;
   font-size: 11px;
-  color: #94a3b8;
+  color: var(--muted);
   font-family: var(--font-mono, monospace);
   letter-spacing: -0.01em;
   transition: all 0.18s ease;
@@ -193,7 +193,8 @@
   gap: 4px !important;
 }
 
-.primary-nav button.nav-pill {
+.primary-nav :is(button,a).nav-pill {
+  text-decoration: none !important;
   display: flex !important;
   align-items: center !important;
   justify-content: space-between !important;
@@ -208,13 +209,13 @@
   transition: all 0.2s ease !important;
 }
 
-.primary-nav button.nav-pill:hover {
+.primary-nav :is(button,a).nav-pill:hover {
   color: var(--text) !important;
   background: rgba(255, 255, 255, 0.04) !important;
 }
 
-.primary-nav button.nav-pill.selected {
-  color: #ffffff !important;
+.primary-nav :is(button,a).nav-pill.selected {
+  color: var(--text) !important;
   background: rgba(16, 185, 129, 0.08) !important;
   border-color: rgba(16, 185, 129, 0.22) !important;
   font-weight: 600;
@@ -229,7 +230,7 @@
   display: inline-block;
 }
 
-.primary-nav button.nav-pill.selected .nav-indicator {
+.primary-nav :is(button,a).nav-pill.selected .nav-indicator {
   background: #10b981;
   box-shadow: 0 0 8px #10b981;
 }

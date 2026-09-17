@@ -70,7 +70,7 @@
   font-weight: 600;
   line-height: 1.4;
   letter-spacing: -0.015em;
-  color: #ffffff;
+  color: var(--text);
   margin: 0 0 10px;
 }
 
@@ -96,7 +96,7 @@
 .hero-tag {
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  color: #cbd5e1;
+  color: var(--muted);
   font-size: 11px;
   padding: 3px 8px;
   border-radius: 6px;
@@ -160,7 +160,7 @@
   font-size: 16px;
   font-weight: 600;
   line-height: 1.45;
-  color: #f1f5f9;
+  color: var(--text);
   margin: 0 0 8px;
 }
 
@@ -286,3 +286,8 @@
     font-size: 19px;
   }
 }
+
+/* 首页只展示最近 5 篇，其余引导到 /posts */
+.feed-more{margin:26px 0 0;text-align:center}
+.feed-more a{color:var(--accent);font-size:14px;font-family:var(--font-mono,monospace);text-decoration:none}
+.feed-more a:hover{text-decoration:underline}

@@ -50,7 +50,7 @@ app.get("/health", (c) => c.json({ ok: true }))
 app.get("/posts", async (c) => c.json(sql ? await sql`select slug, title, excerpt, tags, pinned, published_at as date from posts where status = 'published' and published_at <= now() order by pinned desc, published_at desc` : []))
 app.get("/posts/:slug", async (c) => {
   if (!sql) return c.json({ message: "Not found" }, 404)
-  const [post] = await sql`select title, published_at as date, tags, content as body from posts where slug = ${c.req.param("slug")} and status = 'published' and published_at <= now()`
+  const [post] = await sql`select title, slug, excerpt, published_at as date, tags, content as body from posts where slug = ${c.req.param("slug")} and status = 'published' and published_at <= now()`
   return post ? c.json({ ...post, minutes: Math.max(1, Math.ceil(post.body.length / 500)) }) : c.json({ message: "Not found" }, 404)
 })
 app.get("/projects", async (c) => c.json(sql ? await sql`select slug, title, description, content, cover_url as "coverUrl", tags, url from projects where status = 'published' order by created_at desc` : []))

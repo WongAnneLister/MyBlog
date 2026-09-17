@@ -41,6 +41,7 @@ services:
       dockerfile: apps/web/Dockerfile
       args:
         NEXT_PUBLIC_API_URL: /api
+        NEXT_PUBLIC_SITE_URL: https://blog.michikatsu.top
     container_name: blog_web
     restart: unless-stopped
     environment:

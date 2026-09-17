@@ -3,8 +3,10 @@
 import Link from "next/link"
 import { CSSProperties, useMemo, useState } from "react"
 import { Markdown } from "./markdown"
+import { stripLeadingTitle } from "../lib/text"
 
 type Post = { title: string; date: string; tags: string[]; minutes: number; body: string }
+type PostLink = { slug: string; title: string } | null
 
 function formatDate(value: string) {
   const date = new Date(value)
@@ -12,11 +14,13 @@ function formatDate(value: string) {
   return new Intl.DateTimeFormat("zh-CN", { year: "numeric", month: "long", day: "numeric", timeZone: "Asia/Shanghai" }).format(date)
 }
 
-export function PostReader({ post }: { post: Post }) {
+export function PostReader({ post, newer = null, older = null }: { post: Post; newer?: PostLink; older?: PostLink }) {
   const [light, setLight] = useState(true)
   const [fontSize, setFontSize] = useState(18)
   const [settings, setSettings] = useState(false)
   const style = useMemo(() => ({ "--reader-size": `${fontSize}px` }) as CSSProperties, [fontSize])
+  // 正文里若又写了一遍一级标题，去掉它：一篇文章只保留一个 h1。
+  const body = useMemo(() => stripLeadingTitle(post.body, post.title), [post.body, post.title])
 
   return <div className={`reader-site reader-serif ${light ? "light" : "dark"}`} style={style}>
     <header className="reader-header">
@@ -34,8 +38,13 @@ export function PostReader({ post }: { post: Post }) {
         <h1>{post.title}</h1>
         <div className="reader-meta"><time dateTime={post.date}>{formatDate(post.date)}</time><span>·</span><span>{post.minutes} 分钟阅读</span></div>
         <div className="reader-rule" />
-        <Markdown content={post.body} />
+        <Markdown content={body} />
       </article>
+      {(newer || older) && <nav className="post-nav" aria-label="上一篇 / 下一篇">
+        {newer ? <Link className="post-nav-item" href={`/posts/${newer.slug}`}><span>← 上一篇</span><b>{newer.title}</b></Link> : <span className="post-nav-item empty" />}
+        {older ? <Link className="post-nav-item next" href={`/posts/${older.slug}`}><span>下一篇 →</span><b>{older.title}</b></Link> : <span className="post-nav-item empty" />}
+      </nav>}
+      <p className="post-nav-all"><Link href="/posts">查看全部文章 →</Link></p>
     </main>
   </div>
 }
