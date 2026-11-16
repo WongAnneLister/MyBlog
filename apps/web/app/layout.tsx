@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { Inter, JetBrains_Mono, Newsreader } from "next/font/google"
+import localFont from "next/font/local"
 import "./styles/tokens.css"
 import "./styles/base.css"
 import "./styles/layout.css"
@@ -20,9 +20,18 @@ import "./admin/project-editor.css"
 import "./admin/resume-editor.css"
 import { getSite, normalizeSite, siteUrl } from "../lib/site-data"
 
-const inter = Inter({ subsets: ["latin"], weight: ["400", "500", "600"], variable: "--font-inter", display: "swap" })
-const newsreader = Newsreader({ subsets: ["latin"], weight: ["400", "500", "600"], style: ["normal", "italic"], variable: "--font-newsreader", display: "swap" })
-const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], weight: ["400", "500"], variable: "--font-jetbrains", display: "swap" })
+// 西文字体自托管（app/fonts/，Google Fonts 的 latin 子集可变字体，OFL 许可）：
+// 构建时不再联网下载字体，部署不会因为下载失败而中断。
+const inter = localFont({ src: "./fonts/inter-latin.woff2", weight: "400 600", style: "normal", variable: "--font-inter", display: "swap" })
+const newsreader = localFont({
+  src: [
+    { path: "./fonts/newsreader-latin.woff2", weight: "400 600", style: "normal" },
+    { path: "./fonts/newsreader-italic-latin.woff2", weight: "400 600", style: "italic" }
+  ],
+  variable: "--font-newsreader",
+  display: "swap"
+})
+const jetbrainsMono = localFont({ src: "./fonts/jetbrains-mono-latin.woff2", weight: "400 500", style: "normal", variable: "--font-jetbrains", display: "swap" })
 const fontClass = [inter, newsreader, jetbrainsMono].map((font) => font.variable).join(" ")
 
 // 中文字体不走 next/font：它会在构建时下载上百个 unicode-range 切片，
