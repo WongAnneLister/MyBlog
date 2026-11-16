@@ -21,6 +21,39 @@ function loneYouTubeLink(node?: HastNode) {
   return { video, title: label && label !== href ? label : "YouTube video" }
 }
 
+type MdastNode = { type: string; value?: string; url?: string; children?: MdastNode[] }
+
+const decode = (value: string) => value.replace(/&amp;/g, "&").replace(/&quot;/g, "\"").replace(/&#39;/g, "'")
+
+/** 从 YouTube「分享 → 嵌入」复制来的 <iframe> 代码里取出视频地址和标题。 */
+function youTubeFromIframe(html: string) {
+  const src = html.match(/<iframe\b[^>]*\bsrc\s*=\s*["']([^"']+)["']/i)?.[1]
+  if (!src || !parseYouTube(decode(src))) return null
+  const title = html.match(/<iframe\b[^>]*\btitle\s*=\s*["']([^"']*)["']/i)?.[1]
+  return { url: decode(src), title: title ? decode(title) : "" }
+}
+
+/**
+ * Markdown 不渲染原始 HTML（出于安全会当文字转义），所以把 YouTube 的 iframe 代码
+ * 换成同一个视频的链接，交给下面的段落规则渲染成播放器。其它 HTML 保持原样。
+ */
+function remarkYouTubeIframe() {
+  const walk = (node: MdastNode, inParagraph: boolean) => {
+    node.children = node.children?.map((child) => {
+      if (child.type === "html" && child.value) {
+        const video = youTubeFromIframe(child.value)
+        if (video) {
+          const link: MdastNode = { type: "link", url: video.url, children: [{ type: "text", value: video.title || video.url }] }
+          return inParagraph ? link : { type: "paragraph", children: [link] }
+        }
+      }
+      walk(child, inParagraph || child.type === "paragraph")
+      return child
+    })
+  }
+  return (tree: MdastNode) => walk(tree, false)
+}
+
 const components: Components = {
   // 单独成行的 YouTube 链接渲染成视频；写在句子里的仍是普通链接。
   p({ node, children, ...props }) {
@@ -31,5 +64,5 @@ const components: Components = {
 }
 
 export function Markdown({ content }: { content: string }) {
-  return <div className="markdown"><ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeHighlight]} components={components}>{content}</ReactMarkdown></div>
+  return <div className="markdown"><ReactMarkdown remarkPlugins={[remarkGfm, remarkYouTubeIframe]} rehypePlugins={[rehypeHighlight]} components={components}>{content}</ReactMarkdown></div>
 }
