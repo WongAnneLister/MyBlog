@@ -151,10 +151,22 @@
   line-height: 1.5;
 }
 .writing-row:hover .writing-title { color: var(--accent) }
-.writing-tags { display: flex; flex-wrap: wrap; gap: 8px; font-size: 13px; color: var(--muted) }
+.writing-tags { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 13px; color: var(--muted) }
 
-.chip { padding: 3px 10px; border-radius: 999px; background: var(--chip) }
-.chip-outline { padding: 3px 10px; border-radius: 999px; border: 1px solid var(--line) }
+/* 英文（Newsreader）和中文（思源宋体）字形在默认行高里的位置不同，
+   胶囊固定高度、文字垂直居中，中英文标签才对齐。 */
+.chip,
+.chip-outline {
+  display: inline-flex;
+  align-items: center;
+  height: 26px;
+  padding: 0 10px;
+  border-radius: 999px;
+  line-height: 1;
+  white-space: nowrap;
+}
+.chip { background: var(--chip) }
+.chip-outline { border: 1px solid var(--line) }
 
 /* 胶囊按钮 */
 .button,
