@@ -2,11 +2,11 @@ export type PostLang = "en" | "zh"
 export type Post = { slug: string; title: string; excerpt: string; tags: string[]; pinned: boolean; date: string | null; lang?: PostLang; translationKey?: string | null }
 export type Project = { slug: string; title: string; description: string; content: string; coverUrl: string; tags: string[]; url: string }
 export type ResumeItem = { organization: string; title: string; period: string; location: string; description: string }
-export type Site = { displayName: string; handle: string; avatarUrl: string; homeIntro: string; aboutTitle: string; aboutContent: string; links: { label: string; url: string }[]; education: ResumeItem[]; workExperience: ResumeItem[] }
+export type Site = { displayName: string; handle: string; avatarUrl: string; homeIntro: string; introVideoUrl: string; aboutTitle: string; aboutContent: string; links: { label: string; url: string }[]; education: ResumeItem[]; workExperience: ResumeItem[] }
 
 export { summarize, stripLeadingTitle } from "./text"
 
-export const emptySite: Site = { displayName: "", handle: "", avatarUrl: "", homeIntro: "", aboutTitle: "", aboutContent: "", links: [], education: [], workExperience: [] }
+export const emptySite: Site = { displayName: "", handle: "", avatarUrl: "", homeIntro: "", introVideoUrl: "", aboutTitle: "", aboutContent: "", links: [], education: [], workExperience: [] }
 
 /** 站点公开地址：用于 canonical、Open Graph 与 sitemap 的绝对链接。 */
 export const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://blog.michikatsu.top").replace(/\/$/, "")
