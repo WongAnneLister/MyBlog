@@ -46,6 +46,8 @@
 }
 .lang-switch a { padding: 6px 16px; border-radius: 999px; color: var(--muted) }
 .lang-switch a:hover { color: var(--accent) }
+/* 中西文字体基线不同，固定行高并居中，两个选项才对齐。 */
+.lang-switch a { display: inline-flex; align-items: center; height: 34px; line-height: 1 }
 .lang-switch a[aria-current="true"] {
   background: var(--surface);
   color: var(--text);

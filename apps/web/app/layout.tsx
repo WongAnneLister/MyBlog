@@ -22,7 +22,6 @@ import { getSite, normalizeSite, siteUrl } from "../lib/site-data"
 
 // 西文字体自托管（app/fonts/，Google Fonts 的 latin 子集可变字体，OFL 许可）：
 // 构建时不再联网下载字体，部署不会因为下载失败而中断。
-const inter = localFont({ src: "./fonts/inter-latin.woff2", weight: "400 600", style: "normal", variable: "--font-inter", display: "swap" })
 const newsreader = localFont({
   src: [
     { path: "./fonts/newsreader-latin.woff2", weight: "400 600", style: "normal" },
@@ -32,12 +31,12 @@ const newsreader = localFont({
   display: "swap"
 })
 const jetbrainsMono = localFont({ src: "./fonts/jetbrains-mono-latin.woff2", weight: "400 500", style: "normal", variable: "--font-jetbrains", display: "swap" })
-const fontClass = [inter, newsreader, jetbrainsMono].map((font) => font.variable).join(" ")
+const fontClass = [newsreader, jetbrainsMono].map((font) => font.variable).join(" ")
 
 // 中文字体不走 next/font：它会在构建时下载上百个 unicode-range 切片，
 // VPS 上构建时只要一个切片下载失败整个部署就会失败。改为运行时引用样式表，
 // 浏览器只按页面里实际出现的字下载对应切片。
-const cjkFontsHref = "https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500&family=Noto+Serif+SC:wght@500;600&display=swap"
+const cjkFontsHref = "https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600&display=swap"
 
 /** 首屏渲染前确定主题，避免刷新时闪白 / 闪黑。 */
 const themeScript = `(function(){try{var t=localStorage.getItem("theme");if(t!=="light"&&t!=="dark"){t=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}document.documentElement.dataset.theme=t}catch(e){document.documentElement.dataset.theme="light"}})()`
