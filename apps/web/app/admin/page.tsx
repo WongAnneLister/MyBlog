@@ -8,12 +8,13 @@ import { ResumeEditor } from "../../components/resume-editor"
 
 const api = process.env.NEXT_PUBLIC_API_URL || "/api"
 type Status = "draft" | "hidden" | "published"
-type Post = { id?: number; title: string; slug: string; excerpt: string; content: string; tags: string[]; status: Status; pinned: boolean; publishedAt: string | null }
+type PostLang = "en" | "zh"
+type Post = { id?: number; title: string; slug: string; excerpt: string; content: string; tags: string[]; status: Status; pinned: boolean; publishedAt: string | null; lang: PostLang; translationKey: string | null }
 type Project = { id?: number; title: string; slug: string; description: string; content: string; coverUrl: string; tags: string[]; url: string; status: Status }
 type Link = { label: string; url: string }
 type ResumeItem = { organization: string; title: string; period: string; location: string; description: string }
 type Site = { displayName: string; handle: string; avatarUrl: string; homeIntro: string; aboutTitle: string; aboutContent: string; links: Link[]; education: ResumeItem[]; workExperience: ResumeItem[] }
-const blankPost = (): Post => ({ title: "", slug: "", excerpt: "", content: "", tags: [], status: "draft", pinned: false, publishedAt: null })
+const blankPost = (): Post => ({ title: "", slug: "", excerpt: "", content: "", tags: [], status: "draft", pinned: false, publishedAt: null, lang: "en", translationKey: null })
 const blankProject = (): Project => ({ title: "", slug: "", description: "", content: "", coverUrl: "", tags: [], url: "", status: "draft" })
 const blankSite: Site = { displayName: "", handle: "", avatarUrl: "", homeIntro: "", aboutTitle: "", aboutContent: "", links: [], education: [], workExperience: [] }
 const statusText: Record<Status, string> = { draft: "草稿", hidden: "隐藏", published: "已发布" }
