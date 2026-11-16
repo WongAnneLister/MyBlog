@@ -23,10 +23,10 @@
 }
 
 :root {
-  /* next/font 注入 --font-inter / --font-newsreader / --font-jetbrains /
-     --font-noto-sans-sc / --font-noto-serif-sc，这里组合成三组实际用的字族。 */
-  --font-sans: var(--font-inter), var(--font-noto-sans-sc), system-ui, -apple-system, sans-serif;
-  --font-serif: var(--font-newsreader), var(--font-noto-serif-sc), Georgia, serif;
+  /* next/font 注入 --font-inter / --font-newsreader / --font-jetbrains；
+     中文字体由 layout.tsx 里的 Google Fonts 样式表运行时加载。 */
+  --font-sans: var(--font-inter), "Noto Sans SC", system-ui, -apple-system, sans-serif;
+  --font-serif: var(--font-newsreader), "Noto Serif SC", Georgia, serif;
   --font-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, monospace;
 
   --shell-width: 1040px;
