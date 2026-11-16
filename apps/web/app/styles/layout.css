@@ -128,8 +128,8 @@
 .section-more:hover { color: var(--accent) }
 
 /* 文章列表行（首页与 Writing 共用） */
-.post-list { display: flex; flex-direction: column }
-.post-row {
+.writing-list { display: flex; flex-direction: column }
+.writing-row {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
@@ -137,21 +137,21 @@
   padding: 24px 0;
   border-bottom: 1px solid var(--line);
 }
-.post-row-date {
+.writing-date {
   flex: 0 0 110px;
   font-size: 14px;
   color: var(--muted);
   font-variant-numeric: tabular-nums;
 }
-.post-row-title {
+.writing-title {
   flex: 1 1 420px;
   min-width: 0;
   font-size: 18px;
   font-weight: 500;
   line-height: 1.5;
 }
-.post-row:hover .post-row-title { color: var(--accent) }
-.post-row-tags { display: flex; flex-wrap: wrap; gap: 8px; font-size: 13px; color: var(--muted) }
+.writing-row:hover .writing-title { color: var(--accent) }
+.writing-tags { display: flex; flex-wrap: wrap; gap: 8px; font-size: 13px; color: var(--muted) }
 
 .chip { padding: 3px 10px; border-radius: 999px; background: var(--chip) }
 .chip-outline { padding: 3px 10px; border-radius: 999px; border: 1px solid var(--line) }
@@ -184,7 +184,7 @@
   .page-head { padding: 40px 0 32px }
   .page-head h1 { font-size: 36px }
   .section-head h2 { font-size: 24px }
-  .post-row { flex-direction: column; align-items: flex-start; gap: 8px; padding: 20px 0 }
-  .post-row-date { flex: none; order: -1 }
-  .post-row-title { flex: none; font-size: 17px }
+  .writing-row { flex-direction: column; align-items: flex-start; gap: 8px; padding: 20px 0 }
+  .writing-date { flex: none; order: -1 }
+  .writing-title { flex: none; font-size: 17px }
 }
