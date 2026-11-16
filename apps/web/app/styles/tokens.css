@@ -23,9 +23,8 @@
 }
 
 :root {
-  /* next/font 注入 --font-inter / --font-newsreader / --font-jetbrains；
-     中文字体由 layout.tsx 里的 Google Fonts 样式表运行时加载。 */
-  --font-sans: var(--font-inter), "Noto Sans SC", system-ui, -apple-system, sans-serif;
+  /* 全站统一衬线：西文 Newsreader（next/font/local 注入 --font-newsreader），
+     中文思源宋体（layout.tsx 里的 Google Fonts 样式表运行时加载）；代码用等宽。 */
   --font-serif: var(--font-newsreader), "Noto Serif SC", Georgia, serif;
   --font-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, monospace;
 
