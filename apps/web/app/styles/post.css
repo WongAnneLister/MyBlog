@@ -1,0 +1,97 @@
+/* 文章 / 项目详情：680px 单栏，衬线正文。 */
+.article {
+  max-width: var(--prose-width);
+  margin: 0 auto;
+  padding: 64px 0 96px;
+}
+
+.article-back { font-size: 15px; color: var(--muted) }
+.article-back:hover { color: var(--accent) }
+
+.article h1 {
+  margin: 28px 0 20px;
+  font-family: var(--font-serif);
+  font-size: 46px;
+  line-height: 1.15;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+}
+
+.article-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 32px;
+  margin-bottom: 40px;
+  border-bottom: 1px solid var(--line);
+}
+.article-meta { font-size: 15px; color: var(--muted) }
+
+.article-lead {
+  margin: 0 0 20px;
+  font-size: 18px;
+  line-height: 1.7;
+  color: var(--muted);
+}
+
+/* 语言切换 */
+.lang-switch {
+  display: inline-flex;
+  padding: 4px;
+  border-radius: 999px;
+  background: var(--chip);
+  font-size: 14px;
+}
+.lang-switch a { padding: 6px 16px; border-radius: 999px; color: var(--muted) }
+.lang-switch a:hover { color: var(--accent) }
+.lang-switch a[aria-current="true"] {
+  background: var(--surface);
+  color: var(--text);
+  font-weight: 500;
+}
+
+/* 文章正文：比通用 markdown 更大的阅读字号 */
+.article .markdown { font-size: 21px; line-height: 1.7 }
+.article .markdown p { margin: 0 0 24px }
+.article .markdown h2 { margin: 48px 0 16px; font-size: 24px }
+
+.article-cover {
+  display: block;
+  width: 100%;
+  margin: 0 0 28px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+}
+
+/* 上一篇 / 下一篇 */
+.post-nav {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  margin-top: 64px;
+  padding-top: 32px;
+  border-top: 1px solid var(--line);
+}
+.post-nav-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+}
+.post-nav-item span { font-size: 13px; color: var(--muted) }
+.post-nav-item b { font-size: 16px; font-weight: 500; line-height: 1.5 }
+.post-nav-item:hover { border-color: var(--accent) }
+.post-nav-item.next { text-align: right }
+
+@media (max-width: 760px) {
+  .article { padding: 32px 0 56px }
+  .article h1 { font-size: 32px; margin: 20px 0 16px }
+  .article-head { padding-bottom: 20px; margin-bottom: 28px }
+  .article .markdown { font-size: 18px }
+  .post-nav { margin-top: 40px }
+  .post-nav-item.next { text-align: left }
+}

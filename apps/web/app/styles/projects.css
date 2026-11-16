@@ -1,0 +1,92 @@
+/* 项目列表：第一个大卡片，其余网格卡片。 */
+.project-featured {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 48px;
+  padding: 40px;
+  margin-bottom: 32px;
+  border-radius: 20px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+.project-featured-media {
+  flex: 1 1 380px;
+  min-height: 300px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--chip) center / cover no-repeat;
+}
+.project-featured-body {
+  flex: 1 1 380px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.project-featured-body h2 {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 34px;
+  font-weight: 500;
+}
+.project-featured-body .project-desc { font-size: 16px; line-height: 1.7 }
+
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 32px;
+  padding-bottom: 24px;
+}
+.project-card {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 28px;
+  border-radius: 20px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+.project-card-media {
+  aspect-ratio: 16 / 10;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--chip) center / cover no-repeat;
+}
+.project-card h2 {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 26px;
+  font-weight: 500;
+  transition: color .18s;
+}
+.project-card a:hover h2 { color: var(--accent) }
+
+.project-kicker {
+  font-size: 13px;
+  color: var(--accent);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.project-desc { margin: 0; font-size: 15px; line-height: 1.7; color: var(--muted) }
+.project-tags { display: flex; flex-wrap: wrap; gap: 8px }
+.project-tags span {
+  padding: 4px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  font-size: 13px;
+  color: var(--muted);
+}
+.project-stack { font-size: 14px; color: var(--muted) }
+.project-actions { display: flex; flex-wrap: wrap; gap: 12px; padding-top: 4px }
+.project-links { display: flex; flex-wrap: wrap; gap: 20px; font-size: 15px; margin-top: auto }
+.project-links .muted-link { color: var(--muted) }
+.project-links a:hover { color: var(--accent) }
+
+@media (max-width: 760px) {
+  .project-featured { gap: 24px; padding: 24px; border-radius: 16px }
+  .project-featured-media { min-height: 200px; flex-basis: 100% }
+  .project-featured-body h2 { font-size: 26px }
+  .project-grid { grid-template-columns: 1fr; gap: 20px }
+  .project-card { padding: 20px; border-radius: 16px }
+}

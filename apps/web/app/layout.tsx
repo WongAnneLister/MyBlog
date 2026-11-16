@@ -1,18 +1,13 @@
 import type { Metadata } from "next"
 import { Inter, JetBrains_Mono, Newsreader, Noto_Sans_SC, Noto_Serif_SC } from "next/font/google"
 import "./styles/tokens.css"
-import "./globals.css"
-import "./functional.css"
-import "./categories.css"
-import "./sidebar-compact.css"
-import "./sidebar-clean.css"
+import "./styles/base.css"
+import "./styles/layout.css"
+import "./styles/home.css"
+import "./styles/projects.css"
+import "./styles/post.css"
+import "./styles/about.css"
 import "./styles/markdown.css"
-import "./reader.css"
-import "./feed.css"
-import "./about.css"
-import "./about-resume.css"
-import "./resume.css"
-import "./empty-state.css"
 import "./admin/admin.css"
 import "./admin/admin-layout.css"
 import "./admin/avatar.css"
@@ -20,11 +15,7 @@ import "./admin/avatar-drag.css"
 import "./admin/writer.css"
 import "./admin/preview.css"
 import "./admin/pins.css"
-import "./mobile.css"
-import "./responsive-fixes.css"
-import "./desktop-layout.css"
-import "./project-detail.css"
-import "./about-editor.css"
+import "./admin/about-preview.css"
 import "./admin/project-editor.css"
 import "./admin/resume-editor.css"
 import { getSite, normalizeSite, siteUrl } from "../lib/site-data"
@@ -44,23 +35,24 @@ const themeScript = `(function(){try{var t=localStorage.getItem("theme");if(t!==
 export async function generateMetadata(): Promise<Metadata> {
   const site = normalizeSite(await getSite())
   const name = site.displayName || "Michikatsu"
-  const intro = site.homeIntro?.trim().replace(/\s*×\s*/g, " · ")
-  const description = intro ? `${intro}。${name} 的文章、项目与个人介绍。` : `${name} 的文章、项目与个人介绍`
+  const intro = site.homeIntro?.trim()
+  const description = intro || `Writing, projects and background from ${name}.`
+  const title = `${name} · Personal site`
   return {
     metadataBase: new URL(siteUrl),
-    title: { default: `${name}｜个人网站`, template: `%s｜${name}` },
+    title: { default: title, template: `%s · ${name}` },
     description,
     alternates: { canonical: "/" },
     openGraph: {
       type: "website",
-      siteName: `${name}｜个人网站`,
-      locale: "zh_CN",
+      siteName: name,
+      locale: "en_US",
       url: "/",
-      title: `${name}｜个人网站`,
+      title,
       description,
       images: site.avatarUrl ? [{ url: site.avatarUrl, alt: name }] : undefined
     },
-    twitter: { card: "summary", title: `${name}｜个人网站`, description, images: site.avatarUrl ? [site.avatarUrl] : undefined }
+    twitter: { card: "summary", title, description, images: site.avatarUrl ? [site.avatarUrl] : undefined }
   }
 }
 
