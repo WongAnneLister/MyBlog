@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { Inter, JetBrains_Mono, Newsreader, Noto_Sans_SC, Noto_Serif_SC } from "next/font/google"
+import { Inter, JetBrains_Mono, Newsreader } from "next/font/google"
 import "./styles/tokens.css"
 import "./styles/base.css"
 import "./styles/layout.css"
@@ -23,11 +23,12 @@ import { getSite, normalizeSite, siteUrl } from "../lib/site-data"
 const inter = Inter({ subsets: ["latin"], weight: ["400", "500", "600"], variable: "--font-inter", display: "swap" })
 const newsreader = Newsreader({ subsets: ["latin"], weight: ["400", "500", "600"], style: ["normal", "italic"], variable: "--font-newsreader", display: "swap" })
 const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], weight: ["400", "500"], variable: "--font-jetbrains", display: "swap" })
-// 中文字体体积大，只在真的渲染中文时按需加载。
-const notoSansSC = Noto_Sans_SC({ subsets: ["latin"], weight: ["400", "500"], variable: "--font-noto-sans-sc", display: "swap", preload: false })
-const notoSerifSC = Noto_Serif_SC({ subsets: ["latin"], weight: ["500", "600"], variable: "--font-noto-serif-sc", display: "swap", preload: false })
+const fontClass = [inter, newsreader, jetbrainsMono].map((font) => font.variable).join(" ")
 
-const fontClass = [inter, newsreader, jetbrainsMono, notoSansSC, notoSerifSC].map((font) => font.variable).join(" ")
+// 中文字体不走 next/font：它会在构建时下载上百个 unicode-range 切片，
+// VPS 上构建时只要一个切片下载失败整个部署就会失败。改为运行时引用样式表，
+// 浏览器只按页面里实际出现的字下载对应切片。
+const cjkFontsHref = "https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500&family=Noto+Serif+SC:wght@500;600&display=swap"
 
 /** 首屏渲染前确定主题，避免刷新时闪白 / 闪黑。 */
 const themeScript = `(function(){try{var t=localStorage.getItem("theme");if(t!=="light"&&t!=="dark"){t=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}document.documentElement.dataset.theme=t}catch(e){document.documentElement.dataset.theme="light"}})()`
@@ -61,6 +62,9 @@ export default function Layout({ children }: Readonly<{ children: React.ReactNod
     <html lang="en" className={fontClass} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="stylesheet" href={cjkFontsHref} />
       </head>
       <body>{children}</body>
     </html>
