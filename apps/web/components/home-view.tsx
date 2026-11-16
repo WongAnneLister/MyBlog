@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { LinkIcon } from "./link-icon"
 import { PostList } from "./post-list"
 import { groupByTranslation } from "../lib/posts"
 import type { Post, Project, Site } from "../lib/site-data"
@@ -19,7 +20,8 @@ export function HomeView({ site, posts, projects }: { site: Site; posts: Post[];
             <div className="hero-actions">
               {site.links.map((link, index) => (
                 <a className={index === 0 ? "button" : "button-ghost"} href={link.url} target="_blank" rel="noreferrer" key={`${link.label}-${link.url}`}>
-                  {link.label} ↗
+                  <LinkIcon url={link.url} label={link.label} />
+                  {link.label}
                 </a>
               ))}
             </div>
@@ -41,7 +43,6 @@ export function HomeView({ site, posts, projects }: { site: Site; posts: Post[];
           <Link className="work-row" href={`/projects/${project.slug}`} key={project.slug}>
             <div className="work-media" style={project.coverUrl ? { backgroundImage: `url(${project.coverUrl})` } : undefined} />
             <div className="work-body">
-              {project.tags[0] && <div className="work-kicker">{project.tags[0]}</div>}
               <h3>{project.title}</h3>
               {project.description && <p className="work-desc">{project.description}</p>}
               {project.tags.length > 0 && <div className="work-stack">{project.tags.join(" · ")}</div>}

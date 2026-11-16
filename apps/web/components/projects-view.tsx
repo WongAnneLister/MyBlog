@@ -18,7 +18,7 @@ export function ProjectsView({ projects }: { projects: Project[] }) {
           <div className="project-featured-media" style={featured.coverUrl ? { backgroundImage: `url(${featured.coverUrl})` } : undefined} />
           <div className="project-featured-body">
             <div>
-              {featured.tags[0] && <div className="project-kicker">Featured · {featured.tags[0]}</div>}
+              <div className="project-kicker">Featured</div>
               <h2>{featured.title}</h2>
             </div>
             {featured.description && <p className="project-desc">{featured.description}</p>}
@@ -40,7 +40,6 @@ export function ProjectsView({ projects }: { projects: Project[] }) {
           {rest.map((project) => (
             <article className="project-card" key={project.slug}>
               <div className="project-card-media" style={project.coverUrl ? { backgroundImage: `url(${project.coverUrl})` } : undefined} />
-              {project.tags[0] && <div className="project-kicker">{project.tags[0]}</div>}
               <Link href={`/projects/${project.slug}`}><h2>{project.title}</h2></Link>
               {project.description && <p className="project-desc">{project.description}</p>}
               {project.tags.length > 0 && <div className="project-stack">{project.tags.join(" · ")}</div>}
