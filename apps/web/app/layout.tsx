@@ -1,11 +1,12 @@
 import type { Metadata } from "next"
+import { Inter, JetBrains_Mono, Newsreader, Noto_Sans_SC, Noto_Serif_SC } from "next/font/google"
+import "./styles/tokens.css"
 import "./globals.css"
 import "./functional.css"
 import "./categories.css"
 import "./sidebar-compact.css"
 import "./sidebar-clean.css"
-import "./markdown.css"
-import "./code.css"
+import "./styles/markdown.css"
 import "./reader.css"
 import "./feed.css"
 import "./about.css"
@@ -27,6 +28,18 @@ import "./about-editor.css"
 import "./admin/project-editor.css"
 import "./admin/resume-editor.css"
 import { getSite, normalizeSite, siteUrl } from "../lib/site-data"
+
+const inter = Inter({ subsets: ["latin"], weight: ["400", "500", "600"], variable: "--font-inter", display: "swap" })
+const newsreader = Newsreader({ subsets: ["latin"], weight: ["400", "500", "600"], style: ["normal", "italic"], variable: "--font-newsreader", display: "swap" })
+const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], weight: ["400", "500"], variable: "--font-jetbrains", display: "swap" })
+// 中文字体体积大，只在真的渲染中文时按需加载。
+const notoSansSC = Noto_Sans_SC({ subsets: ["latin"], weight: ["400", "500"], variable: "--font-noto-sans-sc", display: "swap", preload: false })
+const notoSerifSC = Noto_Serif_SC({ subsets: ["latin"], weight: ["500", "600"], variable: "--font-noto-serif-sc", display: "swap", preload: false })
+
+const fontClass = [inter, newsreader, jetbrainsMono, notoSansSC, notoSerifSC].map((font) => font.variable).join(" ")
+
+/** 首屏渲染前确定主题，避免刷新时闪白 / 闪黑。 */
+const themeScript = `(function(){try{var t=localStorage.getItem("theme");if(t!=="light"&&t!=="dark"){t=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}document.documentElement.dataset.theme=t}catch(e){document.documentElement.dataset.theme="light"}})()`
 
 export async function generateMetadata(): Promise<Metadata> {
   const site = normalizeSite(await getSite())
@@ -53,14 +66,9 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default function Layout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="zh-CN">
+    <html lang="en" className={fontClass} suppressHydrationWarning>
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=Noto+Serif+SC:wght@400;500;600;700&display=swap"
-          rel="stylesheet"
-        />
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body>{children}</body>
     </html>

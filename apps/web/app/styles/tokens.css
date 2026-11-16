@@ -1,0 +1,50 @@
+/* Paper & Ink 设计 token：主题挂在 <html data-theme> 上，默认日间。 */
+:root,
+[data-theme="light"] {
+  --bg: #FAFAF7;
+  --surface: #FFFFFF;
+  --text: #1B1B18;
+  --muted: #66655F;
+  --line: #E7E5DE;
+  --accent: #2E6A4E;
+  --accent-soft: #E6EFE9;
+  --chip: #F1F0EB;
+}
+
+[data-theme="dark"] {
+  --bg: #0E100F;
+  --surface: #161917;
+  --text: #ECEAE4;
+  --muted: #A3A199;
+  --line: #272B28;
+  --accent: #7FC49E;
+  --accent-soft: #1A2A21;
+  --chip: #1C1F1D;
+}
+
+:root {
+  /* next/font 注入 --font-inter / --font-newsreader / --font-jetbrains /
+     --font-noto-sans-sc / --font-noto-serif-sc，这里组合成三组实际用的字族。 */
+  --font-sans: var(--font-inter), var(--font-noto-sans-sc), system-ui, -apple-system, sans-serif;
+  --font-serif: var(--font-newsreader), var(--font-noto-serif-sc), Georgia, serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, monospace;
+
+  --shell-width: 1040px;
+  --prose-width: 680px;
+  --shell-pad: 32px;
+}
+
+/* 后台沿用旧的深色配色，且它内部复用了前台的 .markdown 预览：
+   这里给 /admin 保留一份同名变量，前台换 token 不会影响后台。 */
+.admin {
+  --bg: #090a0f;
+  --surface: #12151e;
+  --card: #12151e;
+  --text: #f1f5f9;
+  --muted: #828a9b;
+  --line: rgba(255, 255, 255, 0.08);
+  --accent: #10b981;
+  --accent-soft: rgba(16, 185, 129, 0.12);
+  --chip: rgba(255, 255, 255, 0.06);
+  --tag: rgba(16, 185, 129, 0.12);
+}
