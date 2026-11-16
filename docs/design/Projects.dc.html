@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Michikatsu Projects</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&amp;family=Noto+Sans+SC:wght@400;500&amp;family=Noto+Serif+SC:wght@500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.t-light{--bg:#FAFAF7;--surface:#FFFFFF;--text:#1B1B18;--muted:#66655F;--line:#E7E5DE;--accent:#2E6A4E;--accent-soft:#E6EFE9;--chip:#F1F0EB}
+.t-dark{--bg:#0E100F;--surface:#161917;--text:#ECEAE4;--muted:#A3A199;--line:#272B28;--accent:#7FC49E;--accent-soft:#1A2A21;--chip:#1C1F1D}
+a{color:var(--text);text-decoration:none}
+a:hover{color:var(--accent)}
+.lnk{color:var(--muted)}
+.lnk:hover{color:var(--accent)}
+.toggle:hover{border-color:var(--accent);color:var(--accent)}
+</style>
+</helmet>
+<div class="{{themeClass}}" style="background: var(--bg); color: var(--text); font-family: Inter, 'Noto Sans SC', system-ui, sans-serif; min-height: 100vh">
+<div style="max-width: 1040px; margin: 0 auto; padding: 0 32px; box-sizing: border-box">
+
+<header style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; padding: 28px 0">
+<a href="Main.dc.html" style="display: flex; align-items: center; gap: 10px; font-family: Newsreader, 'Noto Serif SC', serif; font-size: 24px; font-weight: 500">
+<span style="width: 10px; height: 10px; border-radius: 50%; background: var(--accent)"></span>Michikatsu</a>
+<nav style="display: flex; align-items: center; gap: 28px; font-size: 15px">
+<a class="lnk" href="Post.dc.html">Writing</a>
+<a href="Projects.dc.html" aria-current="page" style="color: var(--text); font-weight: 500">Projects</a>
+<a class="lnk" href="Main.dc.html">About</a>
+<button class="toggle" type="button" onClick="{{toggle}}" aria-label="Toggle light / dark mode" style="width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--line); background: transparent; color: var(--text); display: flex; align-items: center; justify-content: center; cursor: pointer">
+<sc-if value="{{isDark}}" hint-placeholder-val="{{false}}">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg>
+</sc-if>
+<sc-if value="{{isLight}}" hint-placeholder-val="{{true}}">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path></svg>
+</sc-if>
+</button>
+</nav>
+</header>
+
+<section style="padding: 72px 0 56px; display: flex; flex-direction: column; gap: 16px">
+<h1 style="margin: 0; font-family: Newsreader, serif; font-size: 52px; font-weight: 500; letter-spacing: -0.02em">Projects</h1>
+<p style="margin: 0; max-width: 620px; font-size: 17px; line-height: 1.75; color: var(--muted)">Each one follows the same shape: the problem, what I built, and what came out of it.</p>
+</section>
+
+<article style="display: flex; flex-wrap: wrap; gap: 48px; padding: 40px; border-radius: 20px; background: var(--surface); border: 1px solid var(--line); margin-bottom: 32px">
+<div style="flex: 1 1 380px; min-height: 300px; border-radius: 12px; background: var(--chip); border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 14px">Screenshot / demo GIF</div>
+<div style="flex: 1 1 380px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
+<div style="display: flex; flex-direction: column; gap: 10px">
+<div style="font-size: 13px; color: var(--accent); font-weight: 500; letter-spacing: 0.04em">FEATURED · AI AGENT</div>
+<h2 style="margin: 0; font-family: Newsreader, serif; font-size: 34px; font-weight: 500">Football Analyst Agent</h2>
+</div>
+<dl style="margin: 0; display: grid; grid-template-columns: 84px minmax(0, 1fr); gap: 14px 16px; font-size: 16px; line-height: 1.65">
+<dt style="color: var(--muted)">Problem</dt><dd style="margin: 0">Amateur teams have match event data, but no one on the team can read what it&#39;s saying.</dd>
+<dt style="color: var(--muted)">Approach</dt><dd style="margin: 0">A LangGraph-orchestrated analysis agent turns raw events into player performance and tactical insights.</dd>
+<dt style="color: var(--muted)">Result</dt><dd style="margin: 0; color: var(--muted)">[One measurable result, e.g. matches analyzed or time to generate a report]</dd>
+</dl>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<span style="padding: 4px 12px; border-radius: 999px; border: 1px solid var(--line); font-size: 13px; color: var(--muted)">Next.js</span>
+<span style="padding: 4px 12px; border-radius: 999px; border: 1px solid var(--line); font-size: 13px; color: var(--muted)">FastAPI</span>
+<span style="padding: 4px 12px; border-radius: 999px; border: 1px solid var(--line); font-size: 13px; color: var(--muted)">LangGraph</span>
+<span style="padding: 4px 12px; border-radius: 999px; border: 1px solid var(--line); font-size: 13px; color: var(--muted)">PostgreSQL</span>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 12px; padding-top: 4px">
+<a href="#" style="display: inline-flex; align-items: center; height: 44px; padding: 0 20px; border-radius: 999px; background: var(--text); color: var(--bg); font-size: 15px; font-weight: 500">Case study →</a>
+<a href="#" style="display: inline-flex; align-items: center; height: 44px; padding: 0 20px; border-radius: 999px; border: 1px solid var(--line); font-size: 15px">Live demo ↗</a>
+<a href="#" style="display: inline-flex; align-items: center; height: 44px; padding: 0 20px; border-radius: 999px; border: 1px solid var(--line); font-size: 15px">Source ↗</a>
+</div>
+</div>
+</article>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 32px">
+
+<article style="display: flex; flex-direction: column; gap: 18px; padding: 28px; border-radius: 20px; background: var(--surface); border: 1px solid var(--line)">
+<div style="aspect-ratio: 16 / 10; border-radius: 12px; background: var(--chip); border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 14px">Screenshot</div>
+<div style="font-size: 13px; color: var(--accent); font-weight: 500; letter-spacing: 0.04em">DESKTOP TOOL</div>
+<h2 style="margin: 0; font-family: Newsreader, serif; font-size: 26px; font-weight: 500">ExcaliDesk</h2>
+<dl style="margin: 0; display: grid; grid-template-columns: 76px minmax(0, 1fr); gap: 10px 12px; font-size: 15px; line-height: 1.65">
+<dt style="color: var(--muted)">Problem</dt><dd style="margin: 0">Excalidraw opens one file at a time, which gets messy once you have dozens.</dd>
+<dt style="color: var(--muted)">Approach</dt><dd style="margin: 0">A local Tauri app that treats a folder as a workspace, Typora-style.</dd>
+<dt style="color: var(--muted)">Result</dt><dd style="margin: 0; color: var(--muted)">[Result]</dd>
+</dl>
+<div style="font-size: 14px; color: var(--muted)">Tauri · Excalidraw</div>
+<div style="display: flex; gap: 20px; font-size: 15px; margin-top: auto"><a href="#">Details →</a><a class="lnk" href="#">Source ↗</a></div>
+</article>
+
+<article style="display: flex; flex-direction: column; gap: 18px; padding: 28px; border-radius: 20px; background: var(--surface); border: 1px solid var(--line)">
+<div style="aspect-ratio: 16 / 10; border-radius: 12px; background: var(--chip); border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 14px">Screenshot</div>
+<div style="font-size: 13px; color: var(--accent); font-weight: 500; letter-spacing: 0.04em">PROTOCOL LAB</div>
+<h2 style="margin: 0; font-family: Newsreader, serif; font-size: 26px; font-weight: 500">MCP Lab</h2>
+<dl style="margin: 0; display: grid; grid-template-columns: 76px minmax(0, 1fr); gap: 10px 12px; font-size: 15px; line-height: 1.65">
+<dt style="color: var(--muted)">Problem</dt><dd style="margin: 0; color: var(--muted)">[What makes MCP hard to understand]</dd>
+<dt style="color: var(--muted)">Approach</dt><dd style="margin: 0">A local web lab for stepping through the MCP protocol hands-on.</dd>
+<dt style="color: var(--muted)">Result</dt><dd style="margin: 0; color: var(--muted)">[Result]</dd>
+</dl>
+<div style="font-size: 14px; color: var(--muted)">MCP · [stack]</div>
+<div style="display: flex; gap: 20px; font-size: 15px; margin-top: auto"><a href="#">Details →</a><a class="lnk" href="#">Source ↗</a></div>
+</article>
+
+<article style="display: flex; flex-direction: column; gap: 18px; padding: 28px; border-radius: 20px; background: var(--surface); border: 1px solid var(--line)">
+<div style="aspect-ratio: 16 / 10; border-radius: 12px; background: var(--chip); border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 14px">Admin editor screenshot</div>
+<div style="font-size: 13px; color: var(--accent); font-weight: 500; letter-spacing: 0.04em">FULL-STACK</div>
+<h2 style="margin: 0; font-family: Newsreader, serif; font-size: 26px; font-weight: 500">This website</h2>
+<dl style="margin: 0; display: grid; grid-template-columns: 76px minmax(0, 1fr); gap: 10px 12px; font-size: 15px; line-height: 1.65">
+<dt style="color: var(--muted)">Problem</dt><dd style="margin: 0">I wanted a site I could write in, manage and deploy myself.</dd>
+<dt style="color: var(--muted)">Approach</dt><dd style="margin: 0">Next.js front end, Hono API and PostgreSQL, with a Markdown admin and Docker deploys.</dd>
+<dt style="color: var(--muted)">Result</dt><dd style="margin: 0">You&#39;re looking at it.</dd>
+</dl>
+<div style="font-size: 14px; color: var(--muted)">Next.js · Hono · PostgreSQL · Docker</div>
+<div style="display: flex; gap: 20px; font-size: 15px; margin-top: auto"><a href="#">Details →</a><a class="lnk" href="https://github.com/WongAnneLister/MyBlog">Source ↗</a></div>
+</article>
+
+</div>
+
+<section style="padding: 80px 0 96px">
+<h2 style="margin: 0 0 8px; font-family: Newsreader, serif; font-size: 26px; font-weight: 500">Other work</h2>
+<a href="#" style="display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 24px; padding: 20px 0; border-bottom: 1px solid var(--line)">
+<span style="font-size: 17px; font-weight: 500">Aurelia Botanica</span>
+<span style="flex: 1 1 320px; font-size: 15px; color: var(--muted)">E-commerce build for a wellness brand: catalog, bag, order API and Stripe test checkout</span>
+<span style="font-size: 14px; color: var(--muted)">Next.js · Stripe ↗</span>
+</a>
+</section>
+
+<footer style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; padding: 32px 0 48px; border-top: 1px solid var(--line); font-size: 14px; color: var(--muted)">
+<div>© 2026 Michikatsu</div>
+<div style="display: flex; gap: 24px"><a class="lnk" href="#">RSS</a><a class="lnk" href="https://github.com/WongAnneLister">GitHub</a><a class="lnk" href="#">Email</a></div>
+</footer>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light"},"$preview":{"width":1440,"height":2500}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const s = this.state || {};
+    const mode = s.mode || this.props.theme || 'light';
+    return {
+      themeClass: 't-' + mode,
+      isDark: mode === 'dark',
+      isLight: mode !== 'dark',
+      toggle: () => this.setState({ mode: mode === 'dark' ? 'light' : 'dark' })
+    };
+  }
+}
+</script>
+</body>
+</html>

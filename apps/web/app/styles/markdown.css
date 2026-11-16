@@ -1,0 +1,163 @@
+/* Markdown 正文：前台文章 / 项目 / About 与后台预览共用。
+   颜色全部走 token，后台在 tokens.css 里有一份同名变量的深色兼容值。 */
+.markdown {
+  font-family: var(--font-serif);
+  font-size: 18px;
+  line-height: 1.75;
+  color: var(--text);
+}
+
+.markdown > :first-child { margin-top: 0 }
+.markdown p { margin: 0 0 1.15em }
+.markdown ul,
+.markdown ol { margin: 0 0 1.15em; padding-left: 1.4em }
+.markdown li { margin: 0 0 .5em }
+.markdown hr { margin: 2.4em 0; border: 0; border-top: 1px solid var(--line) }
+
+.markdown h1,
+.markdown h2,
+.markdown h3,
+.markdown h4 {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  margin: 2em 0 .7em;
+}
+.markdown h1 { font-size: 1.6em }
+.markdown h2 { font-size: 1.22em }
+.markdown h3 { font-size: 1.08em }
+.markdown h4 { font-size: 1em }
+
+.markdown a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+  transition: border-color .18s;
+}
+.markdown a:hover { border-bottom-color: var(--accent) }
+
+.markdown blockquote {
+  margin: 1.6em 0;
+  padding: .2em 0 .2em 1.2em;
+  border-left: 3px solid var(--accent);
+  color: var(--muted);
+  font-style: italic;
+}
+
+.markdown img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 1.8em 0;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+}
+
+.markdown code {
+  font-family: var(--font-mono);
+  font-size: .88em;
+}
+.markdown :not(pre) > code {
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: var(--chip);
+  color: var(--text);
+}
+.markdown pre {
+  margin: 1.6em 0;
+  padding: 20px 24px;
+  border-radius: 12px;
+  background: var(--chip);
+  border: 1px solid var(--line);
+  font-size: 15px;
+  line-height: 1.6;
+  overflow-x: auto;
+}
+.markdown pre code,
+.markdown pre code.hljs {
+  display: block;
+  padding: 0;
+  background: transparent;
+  color: var(--text);
+  font-size: inherit;
+}
+
+.markdown table {
+  display: block;
+  width: max-content;
+  max-width: 100%;
+  overflow: auto;
+  border-collapse: collapse;
+  margin: 1.6em 0;
+  font-family: var(--font-sans);
+  font-size: 15px;
+}
+.markdown th,
+.markdown td { padding: 10px 14px; border: 1px solid var(--line); text-align: left }
+.markdown th { background: var(--chip); font-weight: 600 }
+.markdown input { margin-right: 7px }
+
+/* 代码高亮：两套主题按 [data-theme] 分开，后台（.admin）跟随深色。 */
+[data-theme="light"] .markdown .hljs-comment,
+[data-theme="light"] .markdown .hljs-quote { color: #6a737d }
+[data-theme="light"] .markdown .hljs-keyword,
+[data-theme="light"] .markdown .hljs-selector-tag,
+[data-theme="light"] .markdown .hljs-type,
+[data-theme="light"] .markdown .hljs-deletion { color: #d73a49 }
+[data-theme="light"] .markdown .hljs-string,
+[data-theme="light"] .markdown .hljs-addition,
+[data-theme="light"] .markdown .hljs-template-variable { color: #032f62 }
+[data-theme="light"] .markdown .hljs-number,
+[data-theme="light"] .markdown .hljs-literal,
+[data-theme="light"] .markdown .hljs-symbol,
+[data-theme="light"] .markdown .hljs-bullet,
+[data-theme="light"] .markdown .hljs-attr { color: #005cc5 }
+[data-theme="light"] .markdown .hljs-title,
+[data-theme="light"] .markdown .hljs-section,
+[data-theme="light"] .markdown .hljs-attribute { color: #6f42c1 }
+[data-theme="light"] .markdown .hljs-built_in,
+[data-theme="light"] .markdown .hljs-variable,
+[data-theme="light"] .markdown .hljs-meta { color: #e36209 }
+[data-theme="light"] .markdown .hljs-name,
+[data-theme="light"] .markdown .hljs-tag { color: #22863a }
+
+[data-theme="dark"] .markdown .hljs-comment,
+[data-theme="dark"] .markdown .hljs-quote,
+.admin .markdown .hljs-comment,
+.admin .markdown .hljs-quote { color: #8b949e }
+[data-theme="dark"] .markdown .hljs-keyword,
+[data-theme="dark"] .markdown .hljs-selector-tag,
+[data-theme="dark"] .markdown .hljs-type,
+[data-theme="dark"] .markdown .hljs-deletion,
+.admin .markdown .hljs-keyword,
+.admin .markdown .hljs-selector-tag,
+.admin .markdown .hljs-type { color: #ff7b72 }
+[data-theme="dark"] .markdown .hljs-string,
+[data-theme="dark"] .markdown .hljs-addition,
+[data-theme="dark"] .markdown .hljs-template-variable,
+.admin .markdown .hljs-string,
+.admin .markdown .hljs-template-variable { color: #a5d6ff }
+[data-theme="dark"] .markdown .hljs-number,
+[data-theme="dark"] .markdown .hljs-literal,
+[data-theme="dark"] .markdown .hljs-symbol,
+[data-theme="dark"] .markdown .hljs-bullet,
+[data-theme="dark"] .markdown .hljs-attr,
+.admin .markdown .hljs-number,
+.admin .markdown .hljs-literal,
+.admin .markdown .hljs-attr { color: #79c0ff }
+[data-theme="dark"] .markdown .hljs-title,
+[data-theme="dark"] .markdown .hljs-section,
+[data-theme="dark"] .markdown .hljs-attribute,
+.admin .markdown .hljs-title,
+.admin .markdown .hljs-function { color: #d2a8ff }
+[data-theme="dark"] .markdown .hljs-built_in,
+[data-theme="dark"] .markdown .hljs-variable,
+[data-theme="dark"] .markdown .hljs-meta,
+.admin .markdown .hljs-built_in,
+.admin .markdown .hljs-variable { color: #ffa657 }
+[data-theme="dark"] .markdown .hljs-name,
+[data-theme="dark"] .markdown .hljs-tag,
+.admin .markdown .hljs-name,
+.admin .markdown .hljs-tag { color: #7ee787 }

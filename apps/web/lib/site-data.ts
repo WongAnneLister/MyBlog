@@ -1,4 +1,5 @@
-export type Post = { slug: string; title: string; excerpt: string; tags: string[]; pinned: boolean; date: string | null }
+export type PostLang = "en" | "zh"
+export type Post = { slug: string; title: string; excerpt: string; tags: string[]; pinned: boolean; date: string | null; lang?: PostLang; translationKey?: string | null }
 export type Project = { slug: string; title: string; description: string; content: string; coverUrl: string; tags: string[]; url: string }
 export type ResumeItem = { organization: string; title: string; period: string; location: string; description: string }
 export type Site = { displayName: string; handle: string; avatarUrl: string; homeIntro: string; aboutTitle: string; aboutContent: string; links: { label: string; url: string }[]; education: ResumeItem[]; workExperience: ResumeItem[] }
@@ -34,6 +35,9 @@ export function normalizeSite(value: Partial<Site> | null): Site {
   }
 }
 
+/** 顶部导航与页脚只需要站点资料。 */
+export const loadSite = async () => normalizeSite(await getSite())
+
 /** 首页 / 关于 / 项目 / 博文 四个视图共用的服务端数据加载。 */
 export async function loadShellData() {
   const [posts, projects, site] = await Promise.all([getPosts(), getProjects(), getSite()])
@@ -41,20 +45,20 @@ export async function loadShellData() {
 }
 
 /** 统一构造逐页 metadata：canonical + Open Graph + Twitter 卡片。 */
-export async function buildMetadata(input: { title?: string; description: string; path: string; type?: "website" | "article" | "profile"; publishedTime?: string; tags?: string[]; image?: string }) {
+export async function buildMetadata(input: { title?: string; description: string; path: string; type?: "website" | "article" | "profile"; publishedTime?: string; tags?: string[]; image?: string; languages?: Record<string, string> }) {
   const site = normalizeSite(await getSite())
   const name = site.displayName || "Michikatsu"
-  const title = input.title ? `${input.title}｜${name}` : `${name}｜个人网站`
+  const title = input.title ? `${input.title} · ${name}` : `${name} · Personal site`
   const cover = input.image || site.avatarUrl
   const images = cover ? [{ url: cover, alt: input.title || name }] : undefined
   return {
     title: input.title,
     description: input.description,
-    alternates: { canonical: input.path },
+    alternates: { canonical: input.path, ...(input.languages ? { languages: input.languages } : {}) },
     openGraph: {
       type: input.type ?? "website",
-      siteName: `${name}｜个人网站`,
-      locale: "zh_CN",
+      siteName: name,
+      locale: "en_US",
       url: input.path,
       title,
       description: input.description,

@@ -1,0 +1,113 @@
+/* 首页：hero + 精选项目 + 最近文章。 */
+.hero {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 56px;
+  padding: 88px 0 96px;
+}
+
+.hero-main {
+  flex: 999 1 560px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.hero-main h1 {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 56px;
+  line-height: 1.12;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+.hero-intro {
+  margin: 0;
+  max-width: 600px;
+  font-size: 17px;
+  line-height: 1.75;
+  color: var(--muted);
+}
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding-top: 8px;
+}
+
+.hero-aside {
+  flex: 1 1 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+.hero-avatar {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--chip) center / cover no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  font-family: var(--font-serif);
+  font-size: 44px;
+}
+
+.home-section { padding: 0 0 96px }
+
+/* 精选项目行 */
+.work-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  padding: 36px 0;
+  border-bottom: 1px solid var(--line);
+}
+.work-media {
+  flex: 1 1 320px;
+  max-width: 400px;
+  aspect-ratio: 16 / 10;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--chip) center / cover no-repeat;
+}
+.work-body {
+  flex: 999 1 380px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  justify-content: center;
+}
+.work-kicker {
+  font-size: 13px;
+  color: var(--accent);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.work-body h3 {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 28px;
+  font-weight: 500;
+  transition: color .18s;
+}
+.work-row:hover h3 { color: var(--accent) }
+.work-desc { margin: 0; font-size: 16px; line-height: 1.7; color: var(--muted) }
+.work-stack { font-size: 14px; color: var(--muted) }
+
+@media (max-width: 760px) {
+  .hero { gap: 32px; padding: 40px 0 56px; flex-direction: column-reverse; align-items: flex-start }
+  .hero-main h1 { font-size: 36px }
+  .hero-aside { align-items: flex-start }
+  .hero-avatar { width: 120px; height: 120px; font-size: 32px }
+  .home-section { padding-bottom: 56px }
+  .work-row { gap: 20px; padding: 24px 0 }
+  .work-media { max-width: none }
+  .work-body h3 { font-size: 22px }
+}

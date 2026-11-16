@@ -1,7 +1,8 @@
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { ProjectReader } from "../../../../components/project-reader"
-import { buildMetadata, summarize } from "../../../../lib/site-data"
+import { SiteShell } from "../../../../components/site-shell"
+import { buildMetadata, loadSite, summarize } from "../../../../lib/site-data"
 
 export const dynamic = "force-dynamic"
 
@@ -18,7 +19,7 @@ async function getProject(slug: string): Promise<Project | null> {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params
   const project = await getProject(slug)
-  if (!project) return { title: "项目不存在", robots: { index: false, follow: false } }
+  if (!project) return { title: "Project not found", robots: { index: false, follow: false } }
   return buildMetadata({
     title: project.title,
     description: project.description?.trim() || summarize(project.content || ""),
@@ -30,7 +31,12 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 }
 
 export default async function ProjectPage({ params }: { params: Promise<{ slug: string }> }) {
-  const project = await getProject((await params).slug)
+  const { slug } = await params
+  const [project, site] = await Promise.all([getProject(slug), loadSite()])
   if (!project) notFound()
-  return <ProjectReader project={project} />
+  return (
+    <SiteShell site={site} active="projects">
+      <ProjectReader project={project} />
+    </SiteShell>
+  )
 }

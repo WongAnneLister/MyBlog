@@ -1,0 +1,190 @@
+/* 居中单栏外壳：顶部导航 + 内容 + 页脚，内容最大宽度 1040px。 */
+.shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.shell-inner {
+  width: 100%;
+  max-width: var(--shell-width);
+  margin: 0 auto;
+  padding: 0 var(--shell-pad);
+}
+
+.site-main { flex: 1 }
+
+/* 顶部导航 */
+.site-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 28px 0;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-serif);
+  font-size: 24px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+.brand-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); flex: none }
+
+.site-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 28px;
+  font-size: 15px;
+}
+.site-nav a { color: var(--muted) }
+.site-nav a:hover { color: var(--accent) }
+.site-nav a[aria-current="page"] { color: var(--text); font-weight: 500 }
+
+.theme-toggle {
+  width: 44px;
+  height: 44px;
+  flex: none;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: border-color .18s, color .18s;
+}
+.theme-toggle:hover { border-color: var(--accent); color: var(--accent) }
+/* 日间显月亮、夜间显太阳；两个图标都在 DOM 里，首屏不闪。 */
+.theme-toggle .icon-sun { display: none }
+[data-theme="dark"] .theme-toggle .icon-sun { display: block }
+[data-theme="dark"] .theme-toggle .icon-moon { display: none }
+
+/* 页脚 */
+.site-footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 32px 0 48px;
+  margin-top: 24px;
+  border-top: 1px solid var(--line);
+  font-size: 14px;
+  color: var(--muted);
+}
+.footer-links { display: flex; flex-wrap: wrap; gap: 24px }
+.footer-links a { color: var(--muted) }
+.footer-links a:hover { color: var(--accent) }
+
+/* 页面标题区 */
+.page-head {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 72px 0 56px;
+}
+.page-head h1 {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 52px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+.page-head p {
+  margin: 0;
+  max-width: 620px;
+  font-size: 17px;
+  line-height: 1.75;
+  color: var(--muted);
+}
+
+/* 区块标题 + 右侧“查看全部” */
+.section-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--line);
+}
+.section-head h2 {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 30px;
+  font-weight: 500;
+}
+.section-more { font-size: 15px; color: var(--muted) }
+.section-more:hover { color: var(--accent) }
+
+/* 文章列表行（首页与 Writing 共用） */
+.post-list { display: flex; flex-direction: column }
+.post-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px 32px;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--line);
+}
+.post-row-date {
+  flex: 0 0 110px;
+  font-size: 14px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.post-row-title {
+  flex: 1 1 420px;
+  min-width: 0;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.5;
+}
+.post-row:hover .post-row-title { color: var(--accent) }
+.post-row-tags { display: flex; flex-wrap: wrap; gap: 8px; font-size: 13px; color: var(--muted) }
+
+.chip { padding: 3px 10px; border-radius: 999px; background: var(--chip) }
+.chip-outline { padding: 3px 10px; border-radius: 999px; border: 1px solid var(--line) }
+
+/* 胶囊按钮 */
+.button,
+.button-ghost {
+  display: inline-flex;
+  align-items: center;
+  height: 44px;
+  padding: 0 20px;
+  border-radius: 999px;
+  font-size: 15px;
+}
+.button { background: var(--text); color: var(--bg); font-weight: 500 }
+.button-ghost { border: 1px solid var(--line) }
+.button-ghost:hover { border-color: var(--accent); color: var(--accent) }
+
+.empty-state {
+  padding: 32px 0;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+@media (max-width: 760px) {
+  :root { --shell-pad: 20px }
+  .site-header { padding: 20px 0; gap: 12px }
+  .site-nav { gap: 20px }
+  .page-head { padding: 40px 0 32px }
+  .page-head h1 { font-size: 36px }
+  .section-head h2 { font-size: 24px }
+  .post-row { flex-direction: column; align-items: flex-start; gap: 8px; padding: 20px 0 }
+  .post-row-date { flex: none; order: -1 }
+  .post-row-title { flex: none; font-size: 17px }
+}

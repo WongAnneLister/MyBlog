@@ -14,6 +14,7 @@ const app = new Hono()
 const sql = process.env.POSTGRES_URL ? postgres(process.env.POSTGRES_URL) : null
 const postSchema = z.object({
   title: z.string().min(1), slug: z.string().min(1).regex(/^[a-z0-9-]+$/), excerpt: z.string().default(""), content: z.string().default(""), tags: z.array(z.string()).default([]), status: z.enum(["draft", "hidden", "published"]), pinned: z.boolean().default(false), publishedAt: z.string().nullable(),
+  lang: z.enum(["en", "zh"]).default("en"), translationKey: z.string().max(120).nullable().default(null),
 })
 const projectSchema = z.object({
   title: z.string().min(1), slug: z.string().min(1).regex(/^[a-z0-9-]+$/), description: z.string().default(""), content: z.string().max(60000).default(""), coverUrl: z.string().max(500).default(""), tags: z.array(z.string()).default([]), url: z.string().url().or(z.literal("")), status: z.enum(["draft", "hidden", "published"]),
@@ -36,6 +37,9 @@ const authenticated = (c: any) => {
 if (sql) {
   await sql`create table if not exists posts (id serial primary key, title text not null, slug text unique not null, excerpt text not null default '', content text not null default '', tags text[] not null default '{}', status text not null default 'draft', published_at timestamptz, created_at timestamptz not null default now(), updated_at timestamptz not null default now())`
   await sql`alter table posts add column if not exists pinned boolean not null default false`
+  await sql`alter table posts add column if not exists lang text not null default 'en'`
+  await sql`alter table posts add column if not exists translation_key text`
+  await sql`create index if not exists posts_translation_key_idx on posts (translation_key)`
   await sql`create table if not exists projects (id serial primary key, title text not null, slug text unique not null, description text not null default '', tags text[] not null default '{}', url text not null default '', status text not null default 'draft', created_at timestamptz not null default now(), updated_at timestamptz not null default now())`
   await sql`alter table projects add column if not exists url text not null default ''`
   await sql`alter table projects add column if not exists content text not null default ''`
@@ -47,11 +51,16 @@ if (sql) {
 
 app.use("/*", cors({ origin: process.env.ALLOWED_ORIGIN || "http://localhost:3000" }))
 app.get("/health", (c) => c.json({ ok: true }))
-app.get("/posts", async (c) => c.json(sql ? await sql`select slug, title, excerpt, tags, pinned, published_at as date from posts where status = 'published' and published_at <= now() order by pinned desc, published_at desc` : []))
+app.get("/posts", async (c) => c.json(sql ? await sql`select slug, title, excerpt, tags, pinned, published_at as date, lang, translation_key as "translationKey" from posts where status = 'published' and published_at <= now() order by pinned desc, published_at desc` : []))
 app.get("/posts/:slug", async (c) => {
   if (!sql) return c.json({ message: "Not found" }, 404)
-  const [post] = await sql`select title, slug, excerpt, published_at as date, tags, content as body from posts where slug = ${c.req.param("slug")} and status = 'published' and published_at <= now()`
-  return post ? c.json({ ...post, minutes: Math.max(1, Math.ceil(post.body.length / 500)) }) : c.json({ message: "Not found" }, 404)
+  const [post] = await sql`select title, slug, excerpt, published_at as date, tags, content as body, lang, translation_key as "translationKey" from posts where slug = ${c.req.param("slug")} and status = 'published' and published_at <= now()`
+  if (!post) return c.json({ message: "Not found" }, 404)
+  // 同一 translation_key 下的其它语言版本，供文章页做语言切换。
+  const translations = post.translationKey
+    ? await sql`select lang, slug from posts where translation_key = ${post.translationKey} and slug <> ${post.slug} and status = 'published' and published_at <= now()`
+    : []
+  return c.json({ ...post, translations, minutes: Math.max(1, Math.ceil(post.body.length / 500)) })
 })
 app.get("/projects", async (c) => c.json(sql ? await sql`select slug, title, description, content, cover_url as "coverUrl", tags, url from projects where status = 'published' order by created_at desc` : []))
 app.get("/projects/:slug", async (c) => {
@@ -71,7 +80,7 @@ app.post("/admin/login", zValidator("json", z.object({ password: z.string() })),
 })
 app.get("/admin/posts", async (c) => {
   if (!authenticated(c)) return c.json({ message: "Unauthorized" }, 401)
-  return c.json(sql ? await sql`select id, title, slug, excerpt, content, tags, status, pinned, published_at as "publishedAt" from posts order by pinned desc, updated_at desc` : [])
+  return c.json(sql ? await sql`select id, title, slug, excerpt, content, tags, status, pinned, published_at as "publishedAt", lang, translation_key as "translationKey" from posts order by pinned desc, updated_at desc` : [])
 })
 app.get("/admin/projects", async (c) => {
   if (!authenticated(c)) return c.json({ message: "Unauthorized" }, 401)
@@ -144,14 +153,14 @@ app.post("/admin/posts", zValidator("json", postSchema), async (c) => {
   if (!authenticated(c)) return c.json({ message: "Unauthorized" }, 401)
   if (!sql) return c.json({ message: "Database not configured" }, 503)
   const post = c.req.valid("json")
-  const [row] = await sql`insert into posts ${sql({ title: post.title, slug: post.slug, excerpt: post.excerpt, content: post.content, tags: post.tags, status: post.status, pinned: post.pinned, published_at: post.publishedAt })} returning id`
+  const [row] = await sql`insert into posts ${sql({ title: post.title, slug: post.slug, excerpt: post.excerpt, content: post.content, tags: post.tags, status: post.status, pinned: post.pinned, published_at: post.publishedAt, lang: post.lang, translation_key: post.translationKey || null })} returning id`
   return c.json(row, 201)
 })
 app.put("/admin/posts/:id", zValidator("json", postSchema), async (c) => {
   if (!authenticated(c)) return c.json({ message: "Unauthorized" }, 401)
   if (!sql) return c.json({ message: "Database not configured" }, 503)
   const post = c.req.valid("json")
-  await sql`update posts set title = ${post.title}, slug = ${post.slug}, excerpt = ${post.excerpt}, content = ${post.content}, tags = ${post.tags}, status = ${post.status}, pinned = ${post.pinned}, published_at = ${post.publishedAt}, updated_at = now() where id = ${Number(c.req.param("id"))}`
+  await sql`update posts set title = ${post.title}, slug = ${post.slug}, excerpt = ${post.excerpt}, content = ${post.content}, tags = ${post.tags}, status = ${post.status}, pinned = ${post.pinned}, published_at = ${post.publishedAt}, lang = ${post.lang}, translation_key = ${post.translationKey || null}, updated_at = now() where id = ${Number(c.req.param("id"))}`
   return c.json({ ok: true })
 })
 app.delete("/admin/posts/:id", async (c) => {
