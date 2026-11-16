@@ -166,6 +166,10 @@
   border-radius: 999px;
   font-size: 15px;
 }
+.button,
+.button-ghost { gap: 8px }
+.button .link-icon,
+.button-ghost .link-icon { flex: none }
 .button { background: var(--text); color: var(--bg); font-weight: 500 }
 .button-ghost { border: 1px solid var(--line) }
 .button-ghost:hover { border-color: var(--accent); color: var(--accent) }
