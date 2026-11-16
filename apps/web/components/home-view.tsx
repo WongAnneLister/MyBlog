@@ -1,6 +1,8 @@
 import Link from "next/link"
 import { LinkIcon } from "./link-icon"
 import { PostList } from "./post-list"
+import { YouTubeEmbed } from "./youtube-embed"
+import { parseYouTube } from "../lib/youtube"
 import { groupByTranslation } from "../lib/posts"
 import type { Post, Project, Site } from "../lib/site-data"
 
@@ -9,6 +11,7 @@ export function HomeView({ site, posts, projects }: { site: Site; posts: Post[];
   const initial = name.trim().slice(0, 1).toUpperCase() || "?"
   const featured = projects.slice(0, 3)
   const recent = groupByTranslation(posts).slice(0, 5)
+  const introVideo = parseYouTube(site.introVideoUrl)
 
   return (
     <>
@@ -33,6 +36,12 @@ export function HomeView({ site, posts, projects }: { site: Site; posts: Post[];
           </div>
         </div>
       </section>
+
+      {introVideo && (
+        <section className="home-video" aria-label="Intro video">
+          <YouTubeEmbed video={introVideo} title={`${name} intro video`} />
+        </section>
+      )}
 
       <section className="home-section">
         <div className="section-head">

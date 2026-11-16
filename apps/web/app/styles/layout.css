@@ -192,3 +192,49 @@
   .writing-date { flex: none; order: -1 }
   .writing-title { flex: none; font-size: 17px }
 }
+
+/* YouTube 视频：16:9，先显示封面，点击后再加载播放器 */
+.video-embed { margin: 1.6em 0 }
+.video-frame {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--chip);
+  border: 1px solid var(--line);
+}
+.video-frame iframe,
+.video-poster {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+.video-poster {
+  padding: 0;
+  cursor: pointer;
+  background: var(--chip) center / cover no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.video-play {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.65);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 3px;
+  transition: transform .18s, background .18s;
+}
+.video-poster:hover .video-play,
+.video-poster:focus-visible .video-play { transform: scale(1.06); background: rgba(0, 0, 0, 0.8) }
+.video-embed figcaption { margin-top: 10px; font-size: 14px; font-style: normal }
+.video-embed figcaption a,
+.markdown .video-embed figcaption a { color: var(--muted); border-bottom: 0 }
+.video-embed figcaption a:hover,
+.markdown .video-embed figcaption a:hover { color: var(--accent) }

@@ -104,3 +104,10 @@
   .work-media { max-width: none }
   .work-body h3 { font-size: 22px }
 }
+
+/* hero 下方的介绍视频 */
+.home-video { padding: 0 0 96px }
+.home-video .video-embed { margin: 0 }
+@media (max-width: 760px) {
+  .home-video { padding-bottom: 56px }
+}
