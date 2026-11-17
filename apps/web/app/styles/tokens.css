@@ -6,8 +6,9 @@
   --text: #1B1B18;
   --muted: #66655F;
   --line: #E7E5DE;
-  --accent: #2E6A4E;
-  --accent-soft: #E6EFE9;
+  /* 主色：克莱因蓝（International Klein Blue） */
+  --accent: #002FA7;
+  --accent-soft: #E6EBF7;
   --chip: #F1F0EB;
 }
 
@@ -17,8 +18,10 @@
   --text: #ECEAE4;
   --muted: #A3A199;
   --line: #272B28;
-  --accent: #7FC49E;
-  --accent-soft: #1A2A21;
+  /* 夜间用提亮的克莱因蓝：#002FA7 在深色背景上对比度不足，
+     #6B88FF 在背景 / 卡片 / 标签底色上都 ≥ 5.2:1 */
+  --accent: #6B88FF;
+  --accent-soft: #141B33;
   --chip: #1C1F1D;
 }
 
